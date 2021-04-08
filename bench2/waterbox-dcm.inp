@@ -1,0 +1,120 @@
+* DCM diagnostic 10-charge model benchmarking of minimzation and short dynamics
+*
+
+PRNLEVEL 5 NODE 0
+
+read rtf card
+* TIP5P  WATER TOPOLOGY FILE
+*
+   31    1
+MASS     4 HT     1.00800 ! TIPS3P WATER HYDROGEN
+MASS    58 OT    15.99940 ! TIPS3P WATER OXYGEN
+
+RESI TIP3  0.00000   ! TIPS3P WATER MODEL
+GROUP
+ATOM H1   HT      0.000
+ATOM OH2  OT      0.000
+ATOM H2   HT      0.000
+BOND OH2  H1   OH2 H2  H1  H2  ! THE LAST BOND IS NEEDED FOR SHAKE
+THET H1   OH2  H2
+ACCE OH2
+PATC  FIRS NONE LAST NONE
+
+END
+
+
+read parameter card
+* TIP5P  WATER PARAMETER FILE
+*
+BOND
+HT   OT     450.0       0.9572 ! from TIPS3P geometry
+HT   HT       0.0       1.5139 ! from TIPS3P geometry (for SHAKE w/PARAM)
+
+THETAS
+HT   OT   HT      55.0     104.52    ! FROM TIPS3P GEOMETRY
+
+NONBONDED nbxmod  5 atom cdiel shift vatom vdistance vswitch -
+cutnb 14.0 ctofnb 12.0 ctonnb 10.0 eps 1.0 e14fac 1.0 wmin 1.5
+
+!LJ params
+HT     0.000000  -0.046000     0.224500 ! ALLOW WAT
+OT     0.000000  -0.152100     1.768200 ! ALLOW   WAT
+
+
+HBOND CUTHB 0.5
+END
+
+!================================================================
+! Read coordinates
+!================================================================
+READ SEQU TIP3 512
+GENERATE WAT FIRST NONE LAST NONE SETUP NOANG NODIHED
+
+OPEN UNIT 1 READ FORM NAME tip3p_wat512.crd
+READ COOR CARD UNIT 1
+CLOSE UNIT 1
+
+!================================================================
+! Crystal definition and cutoffs
+!================================================================
+set ci  10.   ! inner switching cutoff
+set rc  12.   ! cutoff
+set ctl 14.   ! list-cutoff
+set xo  14.   ! cutoff for crystal
+
+set 6 24.863
+set 7 24.863
+set 8 24.863
+set ang 90
+
+crystal defi cubic @6 @7 @8 @ang @ang @ang
+crystal build cutoff @xo Noper 0
+IMAGE BYRESIDUE XCEN 0.0 YCEN 0.0 ZCEN 0.0 SELE SEGID WAT END
+
+FASTER ON
+SHAKE BOND TOL 1.0E-8
+
+!================================================================
+!non bonded cut-offs
+!================================================================
+ NBOND CUTNB @ctl CUTIM @ctl CTOFnb @rc CTONnb @ci -
+       atom vatom vdistance                        -
+       VSWITCH  SHIFT  CDIE eps 1.0  e14fac 1.0  wmin 1.5
+
+ ENERGY
+
+!================================================================
+!Initialize user module: here DCM
+!================================================================
+ OPEN UNIT 35 READ CARD NAME h2o-10chg.dcm
+ DCM IUDCM 35 TFSHIFT
+ CLOSE UNIT 35
+
+
+! NBOND EWALD PMEWald KAPPa 0.34 ORDEr 6 -
+! FFTX 32 FFTY 32 FFTZ 32 -
+! CTOFNB 12.0 CUTNB 14.0 QCOR 1.0
+ 
+
+ ENERGY
+
+
+!================================================================
+! Minimize
+!================================================================
+ MINI SD NSTEP 500 NPRINT 10
+
+
+!================================================================                         
+! Heat the system                                                                         
+!================================================================                         
+                                                                                          
+dyna cpt start nstep 1000 timestep 0.001     -                                          
+    pcons pint pref 1.0 pmass 2000. pgamma 25. -                                          
+    INBFRQ -1 IMGFRQ -1                        -                                          
+    nprint 100 iprfrq 5000 ihtfrq 1000 ieqfrq 1000 ntrfrq 1000 -                          
+    firstt  98.15 finalt 298.15 teminc 10.0  tbath 298.15 -                               
+    iasors 1 iasvel 1 iscvel 0 ichecw 1 twindh 5.0 twindl -5.0 
+
+
+stop

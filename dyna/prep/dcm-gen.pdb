@@ -1,0 +1,38 @@
+REMARK  NVT TRIALANINE                                                                
+REMARK   DATE:     4/ 7/21     16:31:35      CREATED BY USER: devereux                
+ATOM      1  N   ALA     1       0.000   0.000   0.000  1.00  0.00      LIG 
+ATOM      2  HT1 ALA     1      -0.347  -0.980  -0.000  1.00  0.00      LIG 
+ATOM      3  HT2 ALA     1      -0.347   0.490  -0.849  1.00  0.00      LIG 
+ATOM      4  HT3 ALA     1      -0.347   0.490  -0.849  1.00  0.00      LIG 
+ATOM      5  CA  ALA     1       1.480   0.000   0.000  1.00  0.00      LIG 
+ATOM      6  HA  ALA     1       1.871  -0.468   0.897  1.00  0.00      LIG 
+ATOM      7  CB  ALA     1       2.033  -0.793  -1.207  1.00  0.00      LIG 
+ATOM      8  HB1 ALA     1       1.678  -1.845  -1.155  1.00  0.00      LIG 
+ATOM      9  HB2 ALA     1       1.677  -0.359  -2.167  1.00  0.00      LIG 
+ATOM     10  HB3 ALA     1       3.144  -0.806  -1.214  1.00  0.00      LIG 
+ATOM     11  C   ALA     1       1.990   1.400   0.000  1.00  0.00      LIG 
+ATOM     12  O   ALA     1       1.241   2.376  -0.000  1.00  0.00      LIG 
+ATOM     13  N   ALA     2       3.336   1.562   0.000  1.00  0.00      LIG 
+ATOM     14  HN  ALA     2       3.904   0.739   0.000  1.00  0.00      LIG 
+ATOM     15  CA  ALA     2       4.065   2.828   0.000  1.00  0.00      LIG 
+ATOM     16  HA  ALA     2       3.811   3.382  -0.897  1.00  0.00      LIG 
+ATOM     17  CB  ALA     2       3.587   3.668   1.207  1.00  0.00      LIG 
+ATOM     18  HB1 ALA     2       2.485   3.801   1.155  1.00  0.00      LIG 
+ATOM     19  HB2 ALA     2       3.826   3.160   2.167  1.00  0.00      LIG 
+ATOM     20  HB3 ALA     2       4.054   4.677   1.214  1.00  0.00      LIG 
+ATOM     21  C   ALA     2       5.597   2.681   0.000  1.00  0.00      LIG 
+ATOM     22  O   ALA     2       6.156   1.585   0.000  1.00  0.00      LIG 
+ATOM     23  N   ALA     3       6.322   3.826   0.000  1.00  0.00      LIG 
+ATOM     24  HN  ALA     3       5.824   4.693  -0.000  1.00  0.00      LIG 
+ATOM     25  CA  ALA     3       7.779   3.940   0.000  1.00  0.00      LIG 
+ATOM     26  HA  ALA     3       8.169   3.472   0.897  1.00  0.00      LIG 
+ATOM     27  CB  ALA     3       8.331   3.146  -1.207  1.00  0.00      LIG 
+ATOM     28  HB1 ALA     3       7.977   2.095  -1.155  1.00  0.00      LIG 
+ATOM     29  HB2 ALA     3       7.976   3.581  -2.167  1.00  0.00      LIG 
+ATOM     30  HB3 ALA     3       9.443   3.134  -1.214  1.00  0.00      LIG 
+ATOM     31  C   ALA     3       8.305   5.386   0.000  1.00  0.00      LIG 
+ATOM     32  OT1 ALA     3       7.605   6.385  -0.000  1.00  0.00      LIG 
+ATOM     33  OT2 ALA     3       9.705   5.398   0.000  1.00  0.00      LIG 
+ATOM     34  HT2 ALA     3      10.103   6.272   0.000  1.00  0.00      LIG 
+TER      35      ALA      3
+END

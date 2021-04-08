@@ -1,0 +1,207 @@
+* DCM diagnostic polarizable 10-charge model for benchmarking of minimzation
+* and short dynamics
+*
+
+PRNLEVEL 5 NODE 0
+
+read rtf card
+* TIP5P  WATER TOPOLOGY FILE
+*
+   31    1
+MASS     4 HT     1.00800 ! TIPS3P WATER HYDROGEN
+MASS    58 OT    15.99940 ! TIPS3P WATER OXYGEN
+
+RESI TIP3  0.00000   ! TIPS3P WATER MODEL
+GROUP
+ATOM H1   HT      0.000
+ATOM OH2  OT      0.000
+ATOM H2   HT      0.000
+BOND OH2  H1   OH2 H2  H1  H2  ! THE LAST BOND IS NEEDED FOR SHAKE
+THET H1   OH2  H2
+ACCE OH2
+PATC  FIRS NONE LAST NONE
+
+END
+
+
+read parameter card
+* TIP5P  WATER PARAMETER FILE
+*
+BOND
+HT   OT     450.0       0.9572 ! from TIPS3P geometry
+HT   HT       0.0       1.5139 ! from TIPS3P geometry (for SHAKE w/PARAM)
+
+THETAS
+HT   OT   HT      55.0     104.52    ! FROM TIPS3P GEOMETRY
+
+NONBONDED nbxmod  5 atom cdiel shift vatom vdistance vswitch -
+cutnb 14.0 ctofnb 12.0 ctonnb 10.0 eps 1.0 e14fac 1.0 wmin 1.5
+
+!LJ params
+HT     0.000000  -0.046000     0.224500 ! ALLOW WAT
+OT     0.000000  -0.152100     1.768200 ! ALLOW   WAT
+
+
+HBOND CUTHB 0.5
+END
+
+!================================================================
+! Read coordinates
+!================================================================
+READ SEQU TIP3 512
+GENERATE WAT FIRST NONE LAST NONE SETUP NOANG NODIHED
+
+OPEN UNIT 1 READ FORM NAME tip3p_wat512.crd
+READ COOR CARD UNIT 1
+CLOSE UNIT 1
+
+!================================================================
+! Crystal definition and cutoffs
+!================================================================
+set ci  10.   ! inner switching cutoff
+set rc  12.   ! cutoff
+set ctl 14.   ! list-cutoff
+set xo  14.   ! cutoff for crystal
+
+set 6 24.863
+set 7 24.863
+set 8 24.863
+set ang 90
+
+crystal defi cubic @6 @7 @8 @ang @ang @ang
+crystal build cutoff @xo Noper 0
+IMAGE BYRESIDUE XCEN 0.0 YCEN 0.0 ZCEN 0.0 SELE SEGID WAT END
+
+FASTER ON
+SHAKE BOND TOL 1.0E-8
+
+!================================================================
+!non bonded cut-offs
+!================================================================
+ NBOND CUTNB @ctl CUTIM @ctl CTOFnb @rc CTONnb @ci -
+       atom vatom vdistance                        -
+       VSWITCH  SHIFT  CDIE eps 1.0  e14fac 1.0  wmin 1.5
+
+ ENERGY
+
+!================================================================
+!Initialize user module: here DCM
+!================================================================
+ OPEN UNIT 35 READ CARD NAME h2o-pol.dcm
+ DCM IUDCM 35 TSHIFT
+ CLOSE UNIT 35
+
+
+ ENERGY
+
+
+!================================================================
+! Minimize
+!================================================================
+ MINI SD NSTEP 200 NPRINT 10
+
+stop
+!================================================================
+! Write psf, crd and pdb file
+!================================================================
+WRITE PSF CARD NAME @datamin/tip5p_wat512.psf
+* PSF
+*
+
+WRITE COOR CARD NAME @datamin/tip5p_wat512.crd
+* CRD
+*
+
+WRITE COOR PDB NAME @datamin/tip5p_wat512.pdb
+* PDB
+*
+
+stop
+
+!================================================================                         
+! Heat the system                                                                         
+!================================================================                         
+OPEN WRITE UNIT 31 CARD NAME @dataheq/md_heq.res      ! Restart file                               
+OPEN WRITE UNIT 32 FILE NAME @dataheq/md_heq.dcd      ! Coordinates file                           
+                                                                                          
+dyna cpt start nstep 1000 timestep 0.001     -                                          
+    pcons pint pref 1.0 pmass 2000. pgamma 25. -                                          
+    INBFRQ -1 IMGFRQ -1                        -                                          
+    nprint 100 iprfrq 5000 ihtfrq 1000 ieqfrq 1000 ntrfrq 1000 -                          
+    firstt  98.15 finalt 298.15 teminc 10.0  tbath 298.15 -                               
+    iasors 1 iasvel 1 iscvel 0 ichecw 1 twindh 5.0 twindl -5.0 -                          
+    IUNWRITE 31 IUNCRD 32 NSAVC 1000                                                      
+                                                                                          
+!================================================================                         
+! Write psf, crd and pdb file                                                             
+!================================================================                         
+WRITE COOR CARD NAME @dataheq/md_heq.crd                                                     
+* CRD                                                                                     
+*                                                                                         
+                                                                                          
+WRITE COOR PDB NAME @dataheq/md_heq.pdb                                                      
+* PDB                                                                                     
+*
+
+!================================================================                         
+! Equilibration with a thermostat                                                         
+!================================================================                         
+OPEN READ  UNIT 30 CARD NAME @dataheq/md_heq.res       ! Restart file                        
+OPEN WRITE UNIT 31 CARD NAME @dataeq/md_eq1.res        ! Restart file                       
+OPEN WRITE UNIT 32 FILE NAME @dataeq/md_eq1.dcd        ! Coordinates file                   
+                                                                                          
+dyna cpt rest nstep 3000 timestep 0.001  -                                             
+    pcons pint pref 1.0 pmass 2000. pgamma 5.0 -                                          
+    hoover reft 298.15 tmass 10000. -                                                     
+    INBFRQ -1 IMGFRQ -1                        -                                          
+    nprint 100 iprfrq 5000 ihtfrq 0 ieqfrq 0 ntrfrq 5000 -                                
+    firstt 298.15 finalt 298.15 teminc 10.0 tstruct 298.15 tbath 298.15 -                 
+    iasors 1 iasvel 1 iscvel 0 ichecw 0 twindh 5.0 twindl -5.0 -                          
+    IUNREAD 30 IUNWRITE 31 IUNCRD 32 NSAVC 1000                                           
+                                                                                          
+!================================================================                         
+! Write psf, crd and pdb file                                                             
+!================================================================                         
+WRITE COOR CARD NAME @dataeq/md_eq1.crd                                                     
+* CRD                                                                                     
+*                                                                                         
+                                                                                          
+WRITE COOR PDB NAME @dataeq/md_eq1.pdb                                                      
+* PDB                                                                                     
+* 
+
+stop
+
+!================================================================                         
+! g(r) calculation                                                                        
+!================================================================                         
+set a ?XTLA                                                                               
+set b ?XTLB                                                                               
+set c ?XTLC                                                                               
+                                                                                          
+open unit 20 unform read name @dataheq/md_heq.dcd                                         
+open unit 21 unform read name @dataeq/md_eq1.dcd                                          
+open unit 8 write form name  @dataanal/tip5.groo                                                    
+open unit 19 write form name @dataanal/tip5.groh                                                   
+open unit 10 write form name @dataanal/tip5.grhh                                                   
+open unit 31 write form name @dataanal/tip5.msd                                                    
+open unit 32 write form name @dataanal/tip5.deN                                                    
+                                                                                          
+coordinate analysis solvent water spec -                                                  
+select ( resname tip3 .and. type oh2 ) end fini -                                         
+xref 0.0 yref 0.0 zref 0.0 -                      ! specifies solvent analysis around (xref, yref, zref), static site
+skip 1000 firstu 20 nunit 2  -                    ! trajectory specification SKIP 1000 (1000*0.001=1 ps)                          
+rDsp 9.4285 -                                     ! radius of dynamics sphere, used for densities, kirkwood and dbf
+rspin 0.0 rspout 999.9 -                          ! we are interested in ALL waters       
+ncors 20 -                                        ! compute MSD to NCORS*SKIP steps       
+mgn 100 dr 0.1 -                                  ! comp. g(r) at MGN points separated by DR
+rsph 999.9     -                                  ! we use ALL waters for RDF calculation                                                  
+igdist 8 ihh 10 ioh 19 imsd 31 iden 32 -          ! flag to do the solvent-solvent g(r), MSD, DENsity analysis
+ifmin xbox @a ybox @b zbox @c                     ! and we did use PBC, simple rectangular box           
+                                                  ! if trajectory is from constant pressure simulation   
+                                                  ! actual box size is taken from trajectory             
+                                                  ! NSAVC 1000 i.e. @1 ps traj. was saved. For water to get
+                                                  ! a good estimate of Dtransl for the 1-20 ps part of MSD(t)
+
+
+STOP

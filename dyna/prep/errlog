@@ -1,0 +1,56 @@
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   node75
+  Local device: mlx4_0
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   node75
+  Local device: mlx4_0
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   node75
+  Local device: mlx4_0
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   node75
+  Local device: mlx4_0
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   node75
+  Local device: mlx4_0
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   node75
+  Local device: mlx4_0
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   node75
+  Local device: mlx4_0
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   node75
+  Local device: mlx4_0
+--------------------------------------------------------------------------
+[node75][[2704,0],3][/opt/cluster/programs/OpenMPI/openmpi-4.0.2-gcc/opal/mca/btl/tcp/btl_tcp.c:559:mca_btl_tcp_recv_blocking] recv(23) failed: Connection reset by peer (104)
+[node75][[2704,0],2][/opt/cluster/programs/OpenMPI/openmpi-4.0.2-gcc/opal/mca/btl/tcp/btl_tcp.c:559:mca_btl_tcp_recv_blocking] recv(23) failed: Connection reset by peer (104)
+[node75][[2704,0],7][/opt/cluster/programs/OpenMPI/openmpi-4.0.2-gcc/opal/mca/btl/tcp/btl_tcp.c:559:mca_btl_tcp_recv_blocking] recv(23) failed: Connection reset by peer (104)
+[node75][[2704,0],1][/opt/cluster/programs/OpenMPI/openmpi-4.0.2-gcc/opal/mca/btl/tcp/btl_tcp.c:559:mca_btl_tcp_recv_blocking] recv(23) failed: Connection reset by peer (104)
+[node75][[2704,0],6][/opt/cluster/programs/OpenMPI/openmpi-4.0.2-gcc/opal/mca/btl/tcp/btl_tcp.c:559:mca_btl_tcp_recv_blocking] recv(23) failed: Connection reset by peer (104)
+[node75][[2704,0],5][/opt/cluster/programs/OpenMPI/openmpi-4.0.2-gcc/opal/mca/btl/tcp/btl_tcp.c:559:mca_btl_tcp_recv_blocking] recv(23) failed: Connection reset by peer (104)
+[node75][[2704,0],4][/opt/cluster/programs/OpenMPI/openmpi-4.0.2-gcc/opal/mca/btl/tcp/btl_tcp.c:559:mca_btl_tcp_recv_blocking] recv(23) failed: Connection reset by peer (104)
+[node75][[2704,0],0][/opt/cluster/programs/OpenMPI/openmpi-4.0.2-gcc/opal/mca/btl/tcp/btl_tcp.c:559:mca_btl_tcp_recv_blocking] recv(41) failed: Connection reset by peer (104)
