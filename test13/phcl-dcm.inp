@@ -1,0 +1,127 @@
+* CHARMM 
+* Test input file for DCM charge module 
+* Test system: PhCl in water sphere
+*
+
+bomlev -1
+
+set pars pars/  ! paramater file directory
+faster on
+
+! set temperature for molecular dynamics
+SET temp 50
+
+! { Topology }
+OPEN UNIT 1 CARD READ NAME @pars/top_cgenff_all_1g5merge.inp
+READ RTF CARD UNIT 1
+CLOSE UNIT 1
+
+! { parameters }
+OPEN UNIT 1 CARD READ NAME @pars/par_cgenff_all_1g5merge.inp
+READ PARAmeter CARD UNIT 1
+CLOSE UNIT 1
+
+read rtf card unit 5 APPEND
+* rtf for water
+*
+
+RESI DCWA         0.000 ! tip3p water model, generate using noangle nodihedral
+GROUP
+ATOM H1   HT      0.000000
+ATOM OH2  OT      0.000000  ! charges to be combined with DCM model parameters
+ATOM H2   HT      0.000000
+BOND OH2 H1 OH2 H2 H1 H2    ! the last bond is needed for shake
+ANGLE H1 OH2 H2             ! required
+ACCEPTOR OH2
+PATCHING FIRS NONE LAST NONE
+
+END
+
+read para card unit 5 APPEND
+* water parameters
+*
+BOND
+OT   HT    450.000     0.9572 ! ALLOW   WAT
+HT   HT      0.000     1.5139 ! ALLOW WAT
+
+ANGLE
+HT   OT   HT     50.000   104.5200 ! ALLOW WAT
+
+
+NONBONDED nbxmod  5 atom cdiel shift vatom vdistance vswitch -
+cutnb 900.0 ctofnb 890.0 ctonnb 880.0 eps 1.0 e14fac 1.0 wmin 1.5
+
+HT     0.000000  -0.046000     0.224500 ! ALLOW WAT
+OT     0.000000  -0.152100     1.768200 ! ALLOW   WAT
+END
+
+READ SEQUENCE  CARDS
+* sequence 
+*
+    1
+DCLB
+
+GENERATE MAIN SETUP 
+
+
+READ COOR CARD UNIT 5
+* INITIAL COORDINATES FOR chlorobenzene
+*
+   12
+    1    1 DCLB C1    -1.21064  -0.17896   0.00000 MAIN 1     12.01100
+    2    1 DCLB H1    -2.14173   0.37204   0.00000 MAIN 1      1.00800
+    3    1 DCLB C2    -1.20298  -1.57002   0.00000 MAIN 1     12.01100
+    4    1 DCLB H2    -2.14445  -2.10609   0.00000 MAIN 1      1.00800
+    5    1 DCLB C3     0.00009  -2.26845   0.00000 MAIN 1     12.01100
+    6    1 DCLB H3     0.00011  -3.35145   0.00000 MAIN 1      1.00800
+    7    1 DCLB C4     1.20309  -1.56996   0.00000 MAIN 1     12.01100
+    8    1 DCLB H4     2.14461  -2.10593   0.00000 MAIN 1      1.00800
+    9    1 DCLB C5     1.21066  -0.17886   0.00000 MAIN 1     12.01100
+   10    1 DCLB H5     2.14174   0.37216   0.00000 MAIN 1      1.00800
+   11    1 DCLB C6     0.00000   0.50079   0.00000 MAIN 1     12.01100
+   12    1 DCLB CL    -0.00009   2.25953   0.00000 MAIN 1     35.45300
+   
+ 
+!============define nonbonded parameters====================
+ENERGY CUTNB 800.0 CTONNB 500.0 CTOFNB 700.0 - 
+	VSWITCH SHIFT CDIE EPS 1.0
+	
+OPEN UNIT 1 READ FORMatted NAME @pars/sphere37.crd
+read sequence dcwa 6840
+generate bulk noangle nodihedral
+CLOSe UNIT 1
+
+!find out number of waters added
+DEFIne count SELEct (SEGId bulk .AND. TYPE oh2) END
+set c ?NSEL
+
+OPEN UNIT 1 READ FORMatted NAME @pars/sphere37.crd
+! { get water sphere coordinates }
+READ COOR CARD APPEND UNIT 1
+CLOSe UNIT 1
+
+! center the water sphere
+!coordinate orient noro select segid bulk end
+
+! Delete all water beyond the outer cutoff
+delete atom sort -
+           select .byres. ( .not. ( point 0. 0. 0. cut 11.0) -
+                  .and. ( segid bulk .AND. type oh2 ) ) end
+
+delete atom sort sele .byres. ( segid BULK .and. type oh2 .and. - 
+  (( .not. (segid BULK .or. hydrogen)) .around. 2.5 )) end
+
+! End of solvation of system
+
+!============initialize DCM module====================
+
+OPEN UNIT 35 READ CARD NAME @pars/c6h5cl.dcm
+DCM IUDCM 35 TSHIFT
+
+! check energy with DCM model
+energy
+
+TEST FIRST TOLER 0.000 SELE RESNAME DCLB END
+
+STOP
+

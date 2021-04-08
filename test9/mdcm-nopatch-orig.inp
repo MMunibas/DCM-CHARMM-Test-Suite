@@ -1,0 +1,90 @@
+* trialanine system manually patched for DCM development stability check
+*
+
+PRNLEVEL 5 NODE 0
+bomlev -5
+
+
+
+! Modify following variables:
+
+set pardir   par
+set crddir   crd
+set pdbfile  @crddir/mini-nowat-mdcm.pdb
+set dcmfile  @pardir/ala-14chgs-nopatch.dcm
+
+SET NX 77 ! Number of X points in cube
+SET NY 77 ! Number of Y points in cube
+SET NZ 87 ! Number of Z points in cube
+
+SET DX 0.0908052 ! X spacing in cube
+SET DY 0.0908052 ! Y spacing in cube
+SET DZ 0.0908052 ! Z spacing in cube
+
+SET OX -4.050400 ! X origin in cube
+SET OY -2.083400 ! Y origin in cube
+SET OZ -3.129600 ! Z origin in cube
+
+! end modify
+
+
+
+open unit 30 card read name @pardir/top_all36_prot_mdcm.rtf
+read rtf card unit 30
+close unit 30
+
+open unit 31 card read name @pardir/par_all36_prot.prm
+read para card flex unit 31
+close unit 31
+
+stream @pardir/toppar_water_ions.str
+
+!================================================================
+! Read coordinates
+!================================================================
+
+READ SEQUENCE CARD
+* Pentapeptide sequence for met-enkephalin
+*
+ 3
+NAL ALA ALC
+
+GENERATE LIG FIRST NONE LAST NONE SETUP NOANG NODIHED
+
+READ SEQUENCE CARD
+* point charge
+*
+ 1
+SOD
+
+GENERATE SOD FIRST NONE LAST NONE SETUP NOANG NODIHED
+
+! These coordinates should match those in the reference cube file
+! (converted to Angstrom)
+OPEN UNIT 1 READ FORM NAME @pdbfile
+READ COOR PDB UNIT 1
+CLOSE UNIT 1
+
+
+!set nonbonding parameters
+
+nbond nbxmod 5 atom cdie eps 1.0 -
+  cutnb 999.0 cutim 999.0 ctofnb 997.0 ctonnb 994.0 -
+  vswitch vatom vdist switch e14f 1.0
+
+update
+
+! set MDCM charges
+
+open unit 10 card read name @dcmfile
+DCM IUDCM 10 SWITCH ! XYZ 11
+close unit 10
+
+shake bonh para tol 1.0e-8
+
+energy
+
+TEST FIRST TOLER 0.0000
+
+STOP
+

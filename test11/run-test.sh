@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# THIS TEST LOOKS AT A SOLVATED TRIPEPTIDE IN A WATERBOX WITH PATCHED RESIDUES AT EACH END OF THE TRIPEPTIDE
+# CHAIN. ELECTROSTATICS ARE MODELLED USING PARTICLE MESH EWALD, CENTRAL CHARGES ARE USED TO ALLOW DIRECT
+# COMPARISON OF CHARMM'S "LONEPAIR" ROUTINE AND DCM CODE (CENTRAL CHARGES ARE ALSO DEFINED IN THE DCM PARAMETER
+# FILE)
+
+LOG1=charmm-patch-ref.out
+LOG2=charmm-patch-dev.out
+
+[[ -f $LOG1 ]] && rm $LOG1
+[[ -f $LOG2 ]] && rm $LOG2
+
+ulimit -s 10240
+
+mpirun -np $NPROC $REFCHARMM -i charmm-triala.inp -o $LOG1 >& errlog1
+mpirun -np $NPROC $DEVCHARMM -i dcm-triala.inp -o $LOG2 >& errlog2
+
+echo "PATCHED SOLVATED TRIPEPTIDE WITH STANDARD CHARMM ROUTINES + EWALD VS DEV CODE"
+echo
+echo $LOG1
+for i in "ENER>" "ENER INTERN>" "ENER EXTERN>" "ENER IMAGES>" "ENER EWALD>"; do grep "$i" $LOG1 | tail -1; done
+echo
+
+echo $LOG2
+for i in "ENER>" "ENER INTERN>" "ENER EXTERN>" "ENER IMAGES>" "ENER EWALD>"; do grep "$i" $LOG2 | tail -1; done
+echo
+echo "CHECK FORCES AND VIRIAL:"
+grep " ( " $LOG2 | grep "LIG"
+grep " ( " $LOG2 | grep "CLA"
+grep " CUBI " $LOG2

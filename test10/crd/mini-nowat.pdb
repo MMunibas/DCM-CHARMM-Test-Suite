@@ -1,0 +1,39 @@
+REMARK  NVT TRIALANINE                                                                
+REMARK   DATE:    11/ 2/20     15:54:55      CREATED BY USER: devereux                
+ATOM      1  N   ALA     1      -1.351   3.236   2.554  1.00  0.00      PEP 
+ATOM      2  HT1 ALA     1      -1.496   4.261   2.650  1.00  0.00      PEP 
+ATOM      3  HT2 ALA     1      -2.272   2.764   2.658  1.00  0.00      PEP 
+ATOM      4  HT3 ALA     1      -0.777   2.915   3.359  1.00  0.00      PEP 
+ATOM      5  CA  ALA     1      -0.715   2.870   1.255  1.00  0.00      PEP 
+ATOM      6  HA  ALA     1      -1.332   3.275   0.467  1.00  0.00      PEP 
+ATOM      7  CB  ALA     1       0.688   3.508   1.201  1.00  0.00      PEP 
+ATOM      8  HB1 ALA     1       1.375   3.057   1.948  1.00  0.00      PEP 
+ATOM      9  HB2 ALA     1       1.133   3.370   0.192  1.00  0.00      PEP 
+ATOM     10  HB3 ALA     1       0.639   4.600   1.396  1.00  0.00      PEP 
+ATOM     11  C   ALA     1      -0.604   1.363   1.041  1.00  0.00      PEP 
+ATOM     12  O   ALA     1      -0.669   0.601   2.010  1.00  0.00      PEP 
+ATOM     13  N   ALA     2      -0.447   0.905  -0.228  1.00  0.00      PEP 
+ATOM     14  HN  ALA     2      -0.403   1.543  -0.993  1.00  0.00      PEP 
+ATOM     15  CA  ALA     2      -0.288  -0.495  -0.591  1.00  0.00      PEP 
+ATOM     16  HA  ALA     2      -1.238  -0.968  -0.391  1.00  0.00      PEP 
+ATOM     17  CB  ALA     2      -0.019  -0.594  -2.104  1.00  0.00      PEP 
+ATOM     18  HB1 ALA     2       0.933  -0.088  -2.371  1.00  0.00      PEP 
+ATOM     19  HB2 ALA     2       0.035  -1.653  -2.435  1.00  0.00      PEP 
+ATOM     20  HB3 ALA     2      -0.843  -0.103  -2.665  1.00  0.00      PEP 
+ATOM     21  C   ALA     2       0.753  -1.300   0.204  1.00  0.00      PEP 
+ATOM     22  O   ALA     2       1.707  -0.753   0.765  1.00  0.00      PEP 
+ATOM     23  N   ALA     3       0.549  -2.630   0.282  1.00  0.00      PEP 
+ATOM     24  HN  ALA     3      -0.218  -3.030  -0.212  1.00  0.00      PEP 
+ATOM     25  CA  ALA     3       1.330  -3.546   1.089  1.00  0.00      PEP 
+ATOM     26  HA  ALA     3       1.161  -3.286   2.124  1.00  0.00      PEP 
+ATOM     27  CB  ALA     3       0.790  -4.971   0.851  1.00  0.00      PEP 
+ATOM     28  HB1 ALA     3      -0.289  -5.011   1.115  1.00  0.00      PEP 
+ATOM     29  HB2 ALA     3       0.894  -5.254  -0.218  1.00  0.00      PEP 
+ATOM     30  HB3 ALA     3       1.330  -5.717   1.472  1.00  0.00      PEP 
+ATOM     31  C   ALA     3       2.890  -3.492   0.902  1.00  0.00      PEP 
+ATOM     32  OT1 ALA     3       3.706  -3.225   1.764  1.00  0.00      PEP 
+ATOM     33  OT2 ALA     3       3.317  -3.851  -0.364  1.00  0.00      PEP 
+ATOM     34  HT2 ALA     3       4.260  -4.026  -0.316  1.00  0.00      PEP 
+ATOM     35  SOD SOD     4      -4.352  -3.842  -3.416  1.00  0.00      SOD
+TER      36      SOD      4
+END
