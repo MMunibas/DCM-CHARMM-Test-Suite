@@ -1,4 +1,4 @@
-2          ! no. residue types defined here
+2 0        ! no. residue types defined here, no. flexible charge residues
 
 FBEN       ! residue name
 6          ! no. axis system frames

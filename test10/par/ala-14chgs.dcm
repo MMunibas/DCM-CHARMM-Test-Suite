@@ -1,4 +1,4 @@
-3          ! no. residue types defined here
+3 0        ! no. residue types defined here, no. flexible charge residues
 
 ALA       ! residue name
 5          ! no. axis system frames
